@@ -158,7 +158,7 @@ singleton lock. Remove only the task—without deleting configuration or data—
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-The suite currently contains **23 passing tests** for detection, false-positive
+The suite currently contains **25 passing tests** for detection, false-positive
 suppression, deduplication, and single-instance behavior. GitHub Actions runs lint
 and tests on Python 3.11, 3.12, and 3.13 without credentials.
 

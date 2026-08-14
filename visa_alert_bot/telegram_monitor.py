@@ -62,6 +62,11 @@ def _message_link(chat: Any, chat_id: int, message_id: int) -> str:
     return ""
 
 
+def _is_monitored_chat(chat_id: int | None, monitored_chat_ids: frozenset[int]) -> bool:
+    """Filter by numeric ID without resolving pending/private chats at startup."""
+    return chat_id is not None and int(chat_id) in monitored_chat_ids
+
+
 async def run_monitor(config: AppConfig) -> None:
     config.require_telegram_credentials()
     config.require_monitored_chats()
@@ -87,9 +92,12 @@ async def _run_monitor_locked(config: AppConfig) -> None:
     state = AlertState(config.database_path)
     state.prune()
     dispatcher = AlertDispatcher(config, client)
+    monitored_chat_ids = frozenset(config.monitored_chat_ids)
 
-    @client.on(events.NewMessage(chats=list(config.monitored_chat_ids), incoming=True))
+    @client.on(events.NewMessage(incoming=True))
     async def on_message(event: Any) -> None:
+        if not _is_monitored_chat(event.chat_id, monitored_chat_ids):
+            return
         text = (event.raw_text or "").strip()
         if not text or not state.mark_message_once(int(event.chat_id), int(event.id)):
             return
@@ -134,7 +142,7 @@ async def _run_monitor_locked(config: AppConfig) -> None:
     LOGGER.warning(
         "Visa monitor is live as @%s. Watching %d chat(s). Dry run: %s",
         getattr(me, "username", None) or getattr(me, "first_name", "Telegram user"),
-        len(config.monitored_chat_ids),
+        len(monitored_chat_ids),
         config.dry_run,
     )
     try:
