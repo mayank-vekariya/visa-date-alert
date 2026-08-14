@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Visa Date Alert is a local, read-only Telegram monitor that filters visa appointment chatter into private Telegram alerts and optional HIGH-alert phone calls."
+    />
+    <meta name="theme-color" content="#08110e" />
+    <meta property="og:title" content="Visa Date Alert · Catch the signal, skip the noise" />
+    <meta
+      property="og:description"
+      content="An open-source Telegram visa appointment monitor with evidence-based filtering, private notifications, and optional urgent calls."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mayank-vekariya.github.io/visa-date-alert/" />
+    <meta
+      property="og:image"
+      content="https://mayank-vekariya.github.io/visa-date-alert/assets/og-card.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Visa Date Alert" />
+    <meta
+      name="twitter:description"
+      content="Catch real appointment reports without living inside Telegram groups."
+    />
+    <meta
+      name="twitter:image"
+      content="https://mayank-vekariya.github.io/visa-date-alert/assets/og-card.png"
+    />
+    <title>Visa Date Alert · Telegram appointment intelligence</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="site-header shell">
+      <a class="brand" href="#top" aria-label="Visa Date Alert home">
+        <span class="brand-mark" aria-hidden="true"><i></i></span>
+        <span>Visa Date Alert</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#workflow">Workflow</a>
+        <a href="#features">Features</a>
+        <a href="#lab">Detector lab</a>
+        <a href="#setup">Setup</a>
+      </nav>
+      <a
+        class="header-cta"
+        href="https://github.com/mayank-vekariya/visa-date-alert"
+        aria-label="View Visa Date Alert source on GitHub"
+      >
+        View source <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main id="main">
+      <section class="hero shell" id="top">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> Telegram-first appointment intelligence</div>
+          <h1>Catch the signal.<br /><em>Skip the noise.</em></h1>
+          <p class="hero-lede">
+            A local, read-only monitor that turns busy visa appointment groups into
+            private Telegram alerts—and calls only when the evidence is urgent.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#setup">Build your monitor</a>
+            <a
+              class="button button-ghost"
+              href="https://github.com/mayank-vekariya/visa-date-alert"
+            >
+              Explore the code <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <ul class="trust-list" aria-label="Project guarantees">
+            <li><span aria-hidden="true">✓</span> Read only</li>
+            <li><span aria-hidden="true">✓</span> Local first</li>
+            <li><span aria-hidden="true">✓</span> No booking automation</li>
+          </ul>
+        </div>
+
+        <div class="signal-stage" aria-label="Example visa alert processing">
+          <div class="stage-glow" aria-hidden="true"></div>
+          <div class="console-window">
+            <div class="console-topbar">
+              <div class="window-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <span>live signal</span>
+              <span class="live-pill"><i></i> listening</span>
+            </div>
+            <div class="source-row">
+              <span class="telegram-icon" aria-hidden="true">↗</span>
+              <div>
+                <strong>H1B appointment feed</strong>
+                <small>new message · just now</small>
+              </div>
+            </div>
+            <blockquote>
+              “H1B slots available in Hyderabad for December. Check now.”
+            </blockquote>
+            <div class="analysis-row">
+              <div>
+                <span class="micro-label">confidence</span>
+                <strong class="score">11<span>/12+</span></strong>
+              </div>
+              <div class="signal-bars" aria-label="High confidence">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <span class="high-badge">HIGH</span>
+            </div>
+            <div class="delivery-grid">
+              <div class="delivery-card active">
+                <span aria-hidden="true">●</span>
+                <div><strong>Telegram</strong><small>delivered</small></div>
+              </div>
+              <div class="delivery-card active">
+                <span aria-hidden="true">★</span>
+                <div><strong>Saved</strong><small>archived</small></div>
+              </div>
+              <div class="delivery-card calling">
+                <span aria-hidden="true">⌁</span>
+                <div><strong>Urgent call</strong><small>HIGH only</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-note note-left"><span>NA 2 All</span><strong>ignored</strong></div>
+          <div class="floating-note note-right"><span>Any dates?</span><strong>question filtered</strong></div>
+        </div>
+      </section>
+
+      <section class="ticker" aria-label="Supported alert concepts">
+        <div>
+          <span>H1B / H4</span><i></i><span>B1 / B2</span><i></i><span>Dropbox</span><i></i>
+          <span>Interview Waiver</span><i></i><span>OFC / VAC</span><i></i><span>India locations</span>
+        </div>
+      </section>
+
+      <section class="section shell" id="workflow">
+        <div class="section-heading split-heading">
+          <div>
+            <span class="section-number">01 / Workflow</span>
+            <h2>From group chatter<br />to one useful signal.</h2>
+          </div>
+          <p>
+            The monitor watches only the chats you choose. Every new message passes through
+            context-aware rules before anything reaches your phone.
+          </p>
+        </div>
+        <div class="workflow-grid">
+          <article class="workflow-card">
+            <span class="step-index">01</span>
+            <div class="workflow-icon icon-watch" aria-hidden="true"><i></i><i></i><i></i></div>
+            <h3>Watch selected chats</h3>
+            <p>A personal Telegram session listens to an explicit allowlist. Empty means stop.</p>
+            <small>Telethon · incoming text only</small>
+          </article>
+          <article class="workflow-card featured">
+            <span class="step-index">02</span>
+            <div class="workflow-icon icon-filter" aria-hidden="true"><i></i><i></i><i></i></div>
+            <h3>Score the evidence</h3>
+            <p>Visa, city, month, availability, urgency, questions, negatives, and scams all count.</p>
+            <small>Deterministic · explainable rules</small>
+          </article>
+          <article class="workflow-card">
+            <span class="step-index">03</span>
+            <div class="workflow-icon icon-alert" aria-hidden="true"><i></i></div>
+            <h3>Escalate by confidence</h3>
+            <p>Telegram handles useful leads. Optional phone calls are reserved for HIGH signals.</p>
+            <small>Private bot · Saved · Twilio</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="section feature-section" id="features">
+        <div class="shell">
+          <div class="section-heading compact-heading">
+            <span class="section-number">02 / Built for the messy real world</span>
+            <h2>Quiet by design.<br /><em>Loud when it matters.</em></h2>
+          </div>
+          <div class="bento-grid">
+            <article class="bento bento-large privacy-card">
+              <span class="card-kicker">Local privacy</span>
+              <h3>Your credentials never need a cloud server.</h3>
+              <p>
+                Secrets, sessions, deduplication state, and logs stay on your computer and outside Git.
+              </p>
+              <div class="privacy-visual" aria-hidden="true">
+                <div class="lock-body"><i></i></div>
+                <span class="orbit-dot dot-one"></span><span class="orbit-dot dot-two"></span>
+                <span class="orbit-dot dot-three"></span>
+              </div>
+            </article>
+            <article class="bento noise-card">
+              <span class="card-kicker">Noise control</span>
+              <h3>Questions and dead ends stay quiet.</h3>
+              <ul class="filter-list">
+                <li><span>NA 2 All</span><b>blocked</b></li>
+                <li><span>Any H1 dates?</span><b>question</b></li>
+                <li><span>No submit button</span><b>unbookable</b></li>
+                <li><span>Ping me, low charges</span><b>promotion</b></li>
+              </ul>
+            </article>
+            <article class="bento level-card">
+              <span class="card-kicker">Confidence routing</span>
+              <h3>Three levels. One calm inbox.</h3>
+              <div class="levels">
+                <div><span>0–4</span><b>LOW</b><small>log only</small></div>
+                <div><span>5–8</span><b>MEDIUM</b><small>Telegram</small></div>
+                <div class="hot"><span>9+</span><b>HIGH</b><small>call optional</small></div>
+              </div>
+            </article>
+            <article class="bento bento-wide windows-card">
+              <div>
+                <span class="card-kicker">Always ready</span>
+                <h3>Starts when Windows signs in.</h3>
+                <p>A scheduled task restarts after transient failures, while a lock prevents duplicates.</p>
+              </div>
+              <div class="uptime" aria-label="Example seven day uptime">
+                <span>7-day activity</span>
+                <div class="uptime-bars" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <strong>LIVE <i></i></strong>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section lab-section shell" id="lab">
+        <div class="lab-copy">
+          <span class="section-number">03 / Detector lab</span>
+          <h2>Try the filter<br />before you trust it.</h2>
+          <p>
+            Paste an example appointment message. This browser demo mirrors the main scoring ideas
+            and runs entirely on this page—nothing is uploaded.
+          </p>
+          <div class="preset-list" aria-label="Detector examples">
+            <button type="button" data-message="H1B slots available in Hyderabad for December. Check now">
+              Strong report <span>HIGH</span>
+            </button>
+            <button type="button" data-message="Any H1B dates for Dec?">
+              Question <span>LOW</span>
+            </button>
+            <button type="button" data-message="OFC available but no submit button">
+              Dead end <span>LOW</span>
+            </button>
+            <button type="button" data-message="H1B slots available, low charges, ping me">
+              Promotion <span>LOW</span>
+            </button>
+          </div>
+        </div>
+        <div class="lab-panel">
+          <label for="message-input">Telegram message</label>
+          <textarea id="message-input" rows="5">H1B slots available in Hyderabad for December. Check now</textarea>
+          <button class="button button-primary analyze-button" id="analyze-button" type="button">
+            Analyze message <span aria-hidden="true">→</span>
+          </button>
+          <div class="lab-result high" id="lab-result" aria-live="polite">
+            <div class="result-top">
+              <div><span>Result</span><strong id="result-level">HIGH</strong></div>
+              <div class="result-score"><span>Score</span><strong id="result-score">11</strong><small>/ 12+</small></div>
+            </div>
+            <div class="score-track"><i id="score-fill"></i></div>
+            <ul id="reason-list">
+              <li>+5 appointment available</li>
+              <li>+2 target visa (H1B)</li>
+              <li>+1 target location (Hyderabad)</li>
+              <li>+1 appointment month</li>
+              <li>+2 urgency (check now)</li>
+            </ul>
+          </div>
+          <small class="lab-note">The Python detector and its automated tests remain the source of truth.</small>
+        </div>
+      </section>
+
+      <section class="section setup-section" id="setup">
+        <div class="shell">
+          <div class="section-heading split-heading">
+            <div>
+              <span class="section-number">04 / Get started</span>
+              <h2>From clone to<br />quiet confidence.</h2>
+            </div>
+            <p>
+              Bring your own Telegram credentials and groups. Add Twilio only if urgent calls are
+              worth the small usage cost to you.
+            </p>
+          </div>
+          <ol class="setup-steps">
+            <li><span>01</span><div><strong>Install</strong><p>Run the PowerShell setup to create an isolated Python environment.</p></div></li>
+            <li><span>02</span><div><strong>Connect Telegram</strong><p>Add personal API credentials and create a private BotFather alert bot.</p></div></li>
+            <li><span>03</span><div><strong>Choose sources</strong><p>Join groups yourself, review their quality, and add only their local chat IDs.</p></div></li>
+            <li><span>04</span><div><strong>Test safely</strong><p>Use doctor, sample scoring, and dry-run mode before enabling any notifications.</p></div></li>
+            <li><span>05</span><div><strong>Stay ready</strong><p>Install the Windows sign-in task; optionally enable HIGH-alert calls.</p></div></li>
+          </ol>
+          <div class="setup-actions">
+            <a class="button button-primary" href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SETUP.md">Read the complete setup guide</a>
+            <a class="button button-ghost" href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/HOW_IT_WORKS.md">See how it works</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="security-strip shell">
+        <div class="security-mark" aria-hidden="true"><i></i></div>
+        <div>
+          <span>Open source, with a hard privacy boundary</span>
+          <h2>The repository contains code—not your identity.</h2>
+          <p>
+            `.env`, phone numbers, Telegram IDs, session files, databases, and logs are excluded.
+            The public example contains blank credential fields only.
+          </p>
+        </div>
+        <a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/SECURITY.md">Security policy ↗</a>
+      </section>
+    </main>
+
+    <footer>
+      <div class="shell footer-grid">
+        <div>
+          <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Visa Date Alert</span></a>
+          <p>Built by <a href="https://github.com/mayank-vekariya">Mayank Vekariya</a>.</p>
+        </div>
+        <div class="footer-links">
+          <div><strong>Project</strong><a href="https://github.com/mayank-vekariya/visa-date-alert">Source</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SETUP.md">Setup</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SOURCE_SELECTION.md">Sources</a></div>
+          <div><strong>Details</strong><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/HOW_IT_WORKS.md">Architecture</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/SECURITY.md">Security</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/LICENSE">MIT License</a></div>
+        </div>
+      </div>
+      <div class="shell footer-bottom">
+        <span>© <span id="year">2026</span> Mayank Vekariya</span>
+        <span>Not affiliated with Telegram, Twilio, or any government agency.</span>
+      </div>
+    </footer>
+  </body>
+</html>

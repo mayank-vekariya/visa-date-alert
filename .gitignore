@@ -1,0 +1,17 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+data/
+*.session
+*.session-journal
+*.egg-info/
+logs/
+.DS_Store
+Thumbs.db

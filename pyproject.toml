@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "visa-telegram-alert"
+version = "1.0.0"
+description = "Read-only Telegram visa-slot watcher with urgent self-alerts and optional phone calls"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Mayank Vekariya" },
+]
+requires-python = ">=3.11"
+keywords = ["telegram", "visa", "appointments", "alerts", "twilio", "telethon"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications :: Chat",
+]
+dependencies = [
+    "telethon>=1.44,<2",
+    "twilio>=9,<10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.12,<1",
+]
+
+[project.urls]
+Homepage = "https://mayank-vekariya.github.io/visa-date-alert/"
+Repository = "https://github.com/mayank-vekariya/visa-date-alert"
+Issues = "https://github.com/mayank-vekariya/visa-date-alert/issues"
+
+[project.scripts]
+visa-alert = "visa_alert_bot.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["visa_alert_bot*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
