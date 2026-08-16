@@ -25,19 +25,20 @@ or automate the visa-booking website.
 
 ## 2. Detection
 
-Message text is Unicode-normalized and compared with configurable visa aliases
-and Indian consulate locations. The detector combines evidence instead of
+Message text is Unicode-normalized and compared with configurable B-2 tourist-visa
+aliases and Indian consulate locations. The detector combines evidence instead of
 alerting on one broad word:
 
 - slot/open/available and bulk-appointment phrases;
-- a target visa such as H1B, H4, Dropbox, B1/B2, or Interview Waiver;
+- a target visa such as B2, B-2, B1/B2, tourist visa, or visitor visa;
 - a target city or short code such as Hyderabad or HYD;
 - urgency and appointment-month context.
 
 Hard negatives stop common false alarms first: `NA`, no slots, already gone,
 closed, past availability, questions, no submit button, and agent/promotional
-messages. Configured aliases are matched as terms, so a short alias such as `IW`
-does not match inside an unrelated word such as `preview`.
+messages. Explicit B-1-only, H, F, L, O, and J category posts are rejected unless
+the same message also names the accepted combined B-1/B-2 tourist category.
+Configured aliases are matched as whole terms, so `B2` does not match `B20`.
 
 The score maps to three levels:
 
@@ -70,9 +71,11 @@ TwiML URL can be used when a trial account cannot retrieve inline TwiML.
 
 ## 5. Runtime
 
-On Windows, `install-startup.ps1` creates a Scheduled Task that starts the monitor
-at sign-in and restarts it after transient failures. A file lock prevents multiple
-instances. The computer must remain awake and online.
+On Windows, `install-startup.ps1` creates one Scheduled Task that starts the monitor
+at sign-in and another that checks a once-per-minute heartbeat every hour. A stale
+or missing heartbeat causes a clean monitor restart. A file lock prevents multiple
+instances. `status.ps1` reports the current task and heartbeat state. The computer
+must be on and online to listen; missed checks resume when Windows is available.
 
 ## Limitations
 

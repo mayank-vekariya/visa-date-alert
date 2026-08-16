@@ -50,6 +50,7 @@ class AppConfig:
     telegram_alert_chat_id: int | None
     monitored_chat_ids: tuple[int, ...]
     target_visas: tuple[str, ...]
+    excluded_visas: tuple[str, ...]
     target_locations: tuple[str, ...]
     medium_score: int
     high_score: int
@@ -98,7 +99,11 @@ class AppConfig:
             monitored_chat_ids=_ints("MONITORED_CHAT_IDS"),
             target_visas=_csv(
                 "TARGET_VISAS",
-                "B1/B2,B1 B2,visitor visa,tourist visa,H1B,H-1B,H1,H4,Dropbox,Interview Waiver,IW",
+                "B2,B-2,B1/B2,B1 B2,tourist visa,visitor visa",
+            ),
+            excluded_visas=_csv(
+                "EXCLUDED_VISAS",
+                "B1,B-1,H1B,H-1B,H1,H-1,H4,H-4,F1,F-1,L1,L-1,O1,O-1,J1,J-1",
             ),
             target_locations=_csv(
                 "TARGET_LOCATIONS",
@@ -148,3 +153,7 @@ class AppConfig:
     @property
     def alert_bot_ready(self) -> bool:
         return bool(self.telegram_alert_bot_token and self.telegram_alert_chat_id)
+
+    @property
+    def heartbeat_path(self) -> Path:
+        return self.database_path.parent / "monitor.heartbeat"

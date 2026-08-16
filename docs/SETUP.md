@@ -61,13 +61,16 @@ Copy only the desired numeric IDs into `MONITORED_CHAT_IDS`, comma-separated.
 Keep that value blank in `.env.example`; personal chat IDs should stay local.
 See [source selection](SOURCE_SELECTION.md) for quality and scam checks.
 
-## 5. Choose visas and locations
+## 5. Choose tourist-visa aliases and locations
 
-The defaults cover B1/B2 and H1B/H4 terminology used in Indian appointment
-groups. Values are comma-separated and case-insensitive:
+The defaults focus on B-2 tourist appointments. Combined B-1/B-2 posts are
+accepted because that is the category normally used for tourist appointments;
+explicitly named non-tourist categories are rejected. Values are comma-separated
+and case-insensitive:
 
 ```dotenv
-TARGET_VISAS=B1/B2,B1 B2,visitor visa,tourist visa,H1B,H-1B,H1,H4,Dropbox,Interview Waiver,IW
+TARGET_VISAS=B2,B-2,B1/B2,B1 B2,tourist visa,visitor visa
+EXCLUDED_VISAS=B1,B-1,H1B,H-1B,H1,H-1,H4,H-4,F1,F-1,L1,L-1,O1,O-1,J1,J-1
 TARGET_LOCATIONS=Mumbai,Delhi,Hyderabad,Chennai,Kolkata,MUM,DEL,HYD,CHN,KOL
 MEDIUM_SCORE=5
 HIGH_SCORE=9
@@ -79,6 +82,7 @@ The doctor never displays secrets or sends an alert:
 
 ```powershell
 .\.venv\Scripts\visa-alert.exe doctor
+.\.venv\Scripts\visa-alert.exe check "B2 slots available in Hyderabad for December. Check now"
 .\.venv\Scripts\visa-alert.exe check "H1B slots available in Hyderabad for December. Check now"
 .\.venv\Scripts\visa-alert.exe check "NA 2 All"
 ```
@@ -122,7 +126,13 @@ HIGH alerts; detector tests and `doctor` never call Twilio.
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install-startup.ps1
 Get-ScheduledTask -TaskName "Visa Date Alert Monitor"
+powershell -ExecutionPolicy Bypass -File .\status.ps1
 ```
+
+This installs the sign-in monitor plus an hourly watchdog. The monitor refreshes a
+local heartbeat every minute; the watchdog restarts it if the task is down or the
+heartbeat is more than ten minutes old. Windows runs a missed check when the PC is
+next available.
 
 To remove only the startup task while keeping all local data:
 
@@ -139,6 +149,7 @@ powershell -ExecutionPolicy Bypass -File .\uninstall-startup.ps1
 | Bot notifications are silent | Unmute the private bot chat in Telegram |
 | `No bot chats found` | Send `/start` to the companion bot, then retry |
 | Monitor exits immediately | Run `visa-alert doctor` and inspect the last log lines |
+| Monitor status is unclear | Run `powershell -ExecutionPolicy Bypass -File .\status.ps1` |
 | Twilio cannot reach server | Use a public HTTPS TwiML URL, not localhost |
 | A second monitor will not start | Expected: the singleton lock prevents duplicates |
 

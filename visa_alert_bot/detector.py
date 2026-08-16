@@ -138,10 +138,13 @@ class MessageDetector:
         target_locations: tuple[str, ...],
         medium_score: int = 5,
         high_score: int = 9,
+        excluded_visas: tuple[str, ...] = (),
     ) -> None:
         self.target_visas = tuple(normalize(value) for value in target_visas)
+        self.excluded_visas = tuple(normalize(value) for value in excluded_visas)
         self.target_locations = tuple(normalize(value) for value in target_locations)
         self._visa_patterns = tuple(_term_pattern(value) for value in self.target_visas)
+        self._excluded_visa_patterns = tuple(_term_pattern(value) for value in self.excluded_visas)
         self._location_patterns = tuple(_term_pattern(value) for value in self.target_locations)
         self.medium_score = medium_score
         self.high_score = high_score
@@ -173,6 +176,18 @@ class MessageDetector:
             for visa, pattern in zip(self.target_visas, self._visa_patterns, strict=True)
             if visa and pattern.search(value)
         ]
+        excluded_visas = [
+            visa
+            for visa, pattern in zip(self.excluded_visas, self._excluded_visa_patterns, strict=True)
+            if visa and pattern.search(value)
+        ]
+        if excluded_visas and not visas:
+            return Detection(
+                AlertLevel.LOW,
+                0,
+                (f"non-target visa category ({excluded_visas[0]})",),
+                value,
+            )
         if visas:
             score += 2
             reasons.append(f"+2 target visa ({visas[0]})")

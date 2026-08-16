@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import asyncio
 import logging
+from contextlib import suppress
 from datetime import UTC, datetime
 from typing import Any
 
 from .alerts import Alert, AlertDispatcher
 from .config import AppConfig
 from .detector import AlertLevel, MessageDetector
+from .health import maintain_heartbeat
 from .singleton import SingleInstance
 from .state import AlertState
 
@@ -88,6 +91,7 @@ async def _run_monitor_locked(config: AppConfig) -> None:
         config.target_locations,
         config.medium_score,
         config.high_score,
+        config.excluded_visas,
     )
     state = AlertState(config.database_path)
     state.prune()
@@ -145,7 +149,12 @@ async def _run_monitor_locked(config: AppConfig) -> None:
         len(monitored_chat_ids),
         config.dry_run,
     )
+    heartbeat_task = asyncio.create_task(maintain_heartbeat(config.heartbeat_path))
     try:
         await client.run_until_disconnected()
     finally:
+        heartbeat_task.cancel()
+        with suppress(asyncio.CancelledError):
+            await heartbeat_task
+        config.heartbeat_path.unlink(missing_ok=True)
         state.close()

@@ -7,17 +7,16 @@ const scoreFill = document.querySelector("#score-fill");
 const reasonList = document.querySelector("#reason-list");
 
 const visaTerms = [
+  "b2",
+  "b-2",
   "b1/b2",
   "b1 b2",
   "visitor visa",
   "tourist visa",
-  "h1b",
-  "h-1b",
-  "h1",
-  "h4",
-  "dropbox",
-  "interview waiver",
-  "iw",
+];
+const excludedVisaTerms = [
+  "b1", "b-1", "h1b", "h-1b", "h1", "h-1", "h4", "h-4",
+  "f1", "f-1", "l1", "l-1", "o1", "o-1", "j1", "j-1",
 ];
 const locations = [
   "mumbai",
@@ -80,6 +79,15 @@ function detect(rawText) {
 
   let score = 0;
   const reasons = [];
+  const visa = visaTerms.find((term) => hasTerm(text, term));
+  const excludedVisa = excludedVisaTerms.find((term) => hasTerm(text, term));
+  if (excludedVisa && !visa) {
+    return {
+      level: "LOW",
+      score: 0,
+      reasons: [`non-target visa category (${excludedVisa.toUpperCase()})`],
+    };
+  }
   const positivePatterns = [
     [/\bslots? (?:(?:are|have) )?open(?:ed)?\b/, 5, "slot-open phrase"],
     [/\b(?:slots?|appointments?) (?:are )?available\b/, 5, "appointment available"],
@@ -98,7 +106,6 @@ function detect(rawText) {
     reasons.push(`+${strongest[1]} ${strongest[2]}`);
   }
 
-  const visa = visaTerms.find((term) => hasTerm(text, term));
   if (visa) {
     score += 2;
     reasons.push(`+2 target visa (${visa.toUpperCase()})`);

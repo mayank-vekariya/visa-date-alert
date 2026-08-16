@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Visa Date Alert is a local, read-only Telegram monitor that filters visa appointment chatter into private Telegram alerts and optional HIGH-alert phone calls."
+      content="Visa Date Alert is a local, read-only Telegram monitor for B-2 tourist appointment reports, private Telegram notifications, and optional HIGH-alert phone calls."
     />
     <meta name="theme-color" content="#08110e" />
     <meta property="og:title" content="Visa Date Alert · Catch the signal, skip the noise" />
@@ -65,7 +65,7 @@
           <h1>Catch the signal.<br /><em>Skip the noise.</em></h1>
           <p class="hero-lede">
             A local, read-only monitor that turns busy visa appointment groups into
-            private Telegram alerts—and calls only when the evidence is urgent.
+            private B-2 tourist-slot alerts—and calls only when the evidence is urgent.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#setup">Build your monitor</a>
@@ -94,12 +94,12 @@
             <div class="source-row">
               <span class="telegram-icon" aria-hidden="true">↗</span>
               <div>
-                <strong>H1B appointment feed</strong>
+                <strong>B1/B2 tourist appointment feed</strong>
                 <small>new message · just now</small>
               </div>
             </div>
             <blockquote>
-              “H1B slots available in Hyderabad for December. Check now.”
+              “B2 slots available in Hyderabad for December. Check now.”
             </blockquote>
             <div class="analysis-row">
               <div>
@@ -133,8 +133,8 @@
 
       <section class="ticker" aria-label="Supported alert concepts">
         <div>
-          <span>H1B / H4</span><i></i><span>B1 / B2</span><i></i><span>Dropbox</span><i></i>
-          <span>Interview Waiver</span><i></i><span>OFC / VAC</span><i></i><span>India locations</span>
+          <span>B-2 tourist</span><i></i><span>B1 / B2 combined</span><i></i><span>Visitor visa</span><i></i>
+          <span>Non-tourist categories rejected</span><i></i><span>OFC / VAC</span><i></i><span>India locations</span>
         </div>
       </section>
 
@@ -198,7 +198,7 @@
               <h3>Questions and dead ends stay quiet.</h3>
               <ul class="filter-list">
                 <li><span>NA 2 All</span><b>blocked</b></li>
-                <li><span>Any H1 dates?</span><b>question</b></li>
+                <li><span>Any B2 dates?</span><b>question</b></li>
                 <li><span>No submit button</span><b>unbookable</b></li>
                 <li><span>Ping me, low charges</span><b>promotion</b></li>
               </ul>
@@ -216,7 +216,7 @@
               <div>
                 <span class="card-kicker">Always ready</span>
                 <h3>Starts when Windows signs in.</h3>
-                <p>A scheduled task restarts after transient failures, while a lock prevents duplicates.</p>
+                <p>An hourly heartbeat watchdog restarts a stopped or stale monitor, while a lock prevents duplicates.</p>
               </div>
               <div class="uptime" aria-label="Example seven day uptime">
                 <span>7-day activity</span>
@@ -240,23 +240,26 @@
             and runs entirely on this page—nothing is uploaded.
           </p>
           <div class="preset-list" aria-label="Detector examples">
-            <button type="button" data-message="H1B slots available in Hyderabad for December. Check now">
+            <button type="button" data-message="B2 slots available in Hyderabad for December. Check now">
               Strong report <span>HIGH</span>
             </button>
-            <button type="button" data-message="Any H1B dates for Dec?">
+            <button type="button" data-message="Any B2 dates for Dec?">
               Question <span>LOW</span>
             </button>
             <button type="button" data-message="OFC available but no submit button">
               Dead end <span>LOW</span>
             </button>
-            <button type="button" data-message="H1B slots available, low charges, ping me">
+            <button type="button" data-message="B2 slots available, low charges, ping me">
               Promotion <span>LOW</span>
+            </button>
+            <button type="button" data-message="H1B slots available in Hyderabad. Check now">
+              Other visa <span>LOW</span>
             </button>
           </div>
         </div>
         <div class="lab-panel">
           <label for="message-input">Telegram message</label>
-          <textarea id="message-input" rows="5">H1B slots available in Hyderabad for December. Check now</textarea>
+          <textarea id="message-input" rows="5">B2 slots available in Hyderabad for December. Check now</textarea>
           <button class="button button-primary analyze-button" id="analyze-button" type="button">
             Analyze message <span aria-hidden="true">→</span>
           </button>
@@ -268,7 +271,7 @@
             <div class="score-track"><i id="score-fill"></i></div>
             <ul id="reason-list">
               <li>+5 appointment available</li>
-              <li>+2 target visa (H1B)</li>
+              <li>+2 target visa (B2)</li>
               <li>+1 target location (Hyderabad)</li>
               <li>+1 appointment month</li>
               <li>+2 urgency (check now)</li>
@@ -295,7 +298,7 @@
             <li><span>02</span><div><strong>Connect Telegram</strong><p>Add personal API credentials and create a private BotFather alert bot.</p></div></li>
             <li><span>03</span><div><strong>Choose sources</strong><p>Join groups yourself, review their quality, and add only their local chat IDs.</p></div></li>
             <li><span>04</span><div><strong>Test safely</strong><p>Use doctor, sample scoring, and dry-run mode before enabling any notifications.</p></div></li>
-            <li><span>05</span><div><strong>Stay ready</strong><p>Install the Windows sign-in task; optionally enable HIGH-alert calls.</p></div></li>
+            <li><span>05</span><div><strong>Stay ready</strong><p>Install the Windows sign-in monitor and hourly watchdog; optionally enable HIGH-alert calls.</p></div></li>
           </ol>
           <div class="setup-actions">
             <a class="button button-primary" href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SETUP.md">Read the complete setup guide</a>

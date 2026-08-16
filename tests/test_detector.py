@@ -7,16 +7,12 @@ class MessageDetectorTests(unittest.TestCase):
     def setUp(self) -> None:
         self.detector = MessageDetector(
             (
+                "B2",
+                "B-2",
                 "B1/B2",
+                "B1 B2",
                 "visitor visa",
                 "tourist visa",
-                "H1B",
-                "H-1B",
-                "H1",
-                "H4",
-                "Dropbox",
-                "Interview Waiver",
-                "IW",
             ),
             (
                 "Mumbai",
@@ -30,6 +26,7 @@ class MessageDetectorTests(unittest.TestCase):
                 "CHN",
                 "KOL",
             ),
+            excluded_visas=("B1", "B-1", "H1B", "H-1B", "H1", "H4", "F1", "L1"),
         )
 
     def test_strong_report_is_high(self) -> None:
@@ -75,17 +72,22 @@ class MessageDetectorTests(unittest.TestCase):
         result = self.detector.detect("Mumbai B1/B2 slots aa gaye, hurry")
         self.assertEqual(result.level, AlertLevel.HIGH)
 
-    def test_h1b_bulk_report_is_detected(self) -> None:
-        result = self.detector.detect("Bulk appointments Hyderabad Dec 2026")
-        self.assertEqual(result.level, AlertLevel.MEDIUM)
-
-    def test_h1b_targeted_report_is_high(self) -> None:
-        result = self.detector.detect("H-1B slots available in Chennai for December. Check now")
+    def test_b2_bulk_report_is_detected(self) -> None:
+        result = self.detector.detect("B2 bulk appointments Hyderabad Dec 2026")
         self.assertEqual(result.level, AlertLevel.HIGH)
 
-    def test_compact_h4_report_is_medium(self) -> None:
-        result = self.detector.detect("H4-1 available for 07/27")
+    def test_b2_targeted_report_is_high(self) -> None:
+        result = self.detector.detect("B-2 slots available in Chennai for December. Check now")
+        self.assertEqual(result.level, AlertLevel.HIGH)
+
+    def test_compact_b2_report_is_medium(self) -> None:
+        result = self.detector.detect("B2 available for 07/27")
         self.assertEqual(result.level, AlertLevel.MEDIUM)
+
+    def test_explicit_non_tourist_visa_is_rejected(self) -> None:
+        result = self.detector.detect("H1B slots available in Hyderabad for December. Check now")
+        self.assertEqual(result.level, AlertLevel.LOW)
+        self.assertEqual(result.score, 0)
 
     def test_city_ofc_report_is_medium(self) -> None:
         result = self.detector.detect("Chennai July OFC available")
@@ -101,19 +103,19 @@ class MessageDetectorTests(unittest.TestCase):
         self.assertEqual(result.level, AlertLevel.LOW)
 
     def test_past_availability_is_not_an_alert(self) -> None:
-        result = self.detector.detect("H1B slots were available yesterday")
+        result = self.detector.detect("B2 slots were available yesterday")
         self.assertEqual(result.level, AlertLevel.LOW)
 
-    def test_h1b_question_without_question_mark_is_low(self) -> None:
-        result = self.detector.detect("Any H1B dates for Dec")
+    def test_b2_question_without_question_mark_is_low(self) -> None:
+        result = self.detector.detect("Any B2 dates for Dec")
         self.assertEqual(result.level, AlertLevel.LOW)
 
     def test_agent_advertisement_is_rejected(self) -> None:
-        result = self.detector.detect("H1B slots available for December, low charges, ping me")
+        result = self.detector.detect("B2 slots available for December, low charges, ping me")
         self.assertEqual(result.level, AlertLevel.LOW)
 
     def test_short_alias_does_not_match_inside_another_word(self) -> None:
-        result = self.detector.detect("A preview is available")
+        result = self.detector.detect("B20 is available")
         self.assertEqual(result.level, AlertLevel.LOW)
 
 

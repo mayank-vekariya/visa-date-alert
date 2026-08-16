@@ -7,11 +7,11 @@
 
 [![Visa Date Alert project preview](docs/assets/og-card.png)](https://mayank-vekariya.github.io/visa-date-alert/)
 
-A local, read-only Telegram monitor for U.S. visa appointment reports. It watches
-only the groups or channels you select, filters H1B/H4, B1/B2, Dropbox/Interview
-Waiver, location, month, urgency, negative, question, and promotion context, then
-sends useful leads through a private Telegram bot. HIGH-confidence reports can
-optionally call your phone through Twilio.
+A local, read-only Telegram monitor focused on U.S. B-2 tourist-visa appointment
+reports. It watches only the groups or channels you select, accepts B-2 and the
+combined B-1/B-2 category, rejects explicitly named non-tourist categories, and
+filters location, month, urgency, negative, question, and promotion context.
+HIGH-confidence reports can optionally call your phone through Twilio.
 
 **[View the project showcase](https://mayank-vekariya.github.io/visa-date-alert/)** ·
 **[Read the complete setup guide](docs/SETUP.md)** ·
@@ -26,14 +26,15 @@ optionally call your phone through Twilio.
 - Signs in through Telegram's client API using a separate local session.
 - Watches an explicit allowlist of group/channel IDs; empty configuration stops.
 - Scores new text messages with explainable, deterministic rules.
-- Detects compact H1B/H4 formats such as `NA 2 All`, `OFC available`, short city
-  codes, bulk appointments, and common Hinglish slot reports.
+- Detects B-2/B-1-B-2 reports, short city codes, bulk appointments, and common
+  Hinglish slot reports while rejecting explicitly named non-tourist categories.
 - Suppresses questions, expired/gone reports, unbookable results, duplicates,
   and agent/promotional messages.
 - Delivers MEDIUM and HIGH alerts as normal notifications through a private
   BotFather bot and archives the initial alert in Saved Messages.
 - Places optional Twilio calls for HIGH alerts only.
-- Starts automatically at Windows sign-in and prevents duplicate monitor processes.
+- Starts automatically at Windows sign-in; an hourly heartbeat watchdog recovers it
+  after a crash, sleep, or interrupted task while preventing duplicate processes.
 - Stores deduplication hashes and message IDs—not message bodies—in local SQLite.
 
 ## Signal path
@@ -71,7 +72,7 @@ local file `.env`. Fill in your own values, then run:
 ```powershell
 .\.venv\Scripts\visa-alert.exe doctor
 .\.venv\Scripts\visa-alert.exe list-chats
-.\.venv\Scripts\visa-alert.exe check "H1B slots available in Hyderabad for December. Check now"
+.\.venv\Scripts\visa-alert.exe check "B2 slots available in Hyderabad for December. Check now"
 .\.venv\Scripts\visa-alert.exe run
 ```
 
@@ -90,7 +91,7 @@ keeps every credential, phone number, bot chat ID, and monitored chat ID blank.
 | `TELEGRAM_ALERT_BOT_TOKEN` | Private notification bot | Yes |
 | `TELEGRAM_ALERT_CHAT_ID` | Recipient for normal bot notifications | Private |
 | `MONITORED_CHAT_IDS` | Explicit source allowlist | Private |
-| `TARGET_VISAS`, `TARGET_LOCATIONS` | Case-insensitive detector aliases | No |
+| `TARGET_VISAS`, `EXCLUDED_VISAS`, `TARGET_LOCATIONS` | Accepted, rejected, and location aliases | No |
 | `MEDIUM_SCORE`, `HIGH_SCORE` | Alert thresholds | No |
 | `DRY_RUN` | Score and log without sending alerts | No |
 | `TWILIO_*`, `ALERT_TO_NUMBER` | Optional phone-call/SMS account data | Yes |
@@ -105,10 +106,11 @@ The `check` command is local: it does not connect to Telegram and cannot call
 Twilio.
 
 ```powershell
-visa-alert check "Bulk appointments Hyderabad Dec 2026"
+visa-alert check "B2 bulk appointments Hyderabad Dec 2026"
 visa-alert check "NA 2 All"
-visa-alert check "Any H1B dates for Dec?"
-visa-alert check "H1B slots available, low charges, ping me"
+visa-alert check "Any B2 dates for Dec?"
+visa-alert check "B2 slots available, low charges, ping me"
+visa-alert check "H1B slots available in Hyderabad. Check now"
 ```
 
 For a live network trial without notifications, set `DRY_RUN=true`. The monitor
@@ -144,10 +146,12 @@ Install the Scheduled Task for the current Windows user:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install-startup.ps1
 Get-ScheduledTask -TaskName "Visa Date Alert Monitor"
+powershell -ExecutionPolicy Bypass -File .\status.ps1
 ```
 
-The task starts at sign-in, retries transient failures, and uses the application's
-singleton lock. Remove only the task—without deleting configuration or data—with
+The monitor task starts at sign-in. A second task checks its fresh heartbeat every
+hour and restarts it when needed. `status.ps1` reports both tasks and the latest
+heartbeat. Remove both tasks—without deleting configuration or data—with
 `uninstall-startup.ps1`.
 
 ## Verification
@@ -158,7 +162,7 @@ singleton lock. Remove only the task—without deleting configuration or data—
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-The suite currently contains **25 passing tests** for detection, false-positive
+The suite currently contains **28 passing tests** for detection, false-positive
 suppression, deduplication, and single-instance behavior. GitHub Actions runs lint
 and tests on Python 3.11, 3.12, and 3.13 without credentials.
 
@@ -171,6 +175,8 @@ docs/                 GitHub Pages showcase and detailed guides
 .github/workflows/    Public credential-free CI
 setup.ps1             Local environment bootstrap
 install-startup.ps1   Windows sign-in task installer
+watchdog.ps1          Hourly health check and automatic recovery
+status.ps1            Human-readable monitor health report
 .env.example          Blank secrets plus safe detector defaults
 ```
 

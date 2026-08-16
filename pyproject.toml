@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "visa-telegram-alert"
 version = "1.0.0"
-description = "Read-only Telegram visa-slot watcher with urgent self-alerts and optional phone calls"
+description = "Read-only Telegram B-2 tourist-visa watcher with self-healing alerts"
 readme = "README.md"
 license = "MIT"
 authors = [
