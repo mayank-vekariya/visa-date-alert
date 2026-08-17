@@ -20,15 +20,10 @@ const excludedVisaTerms = [
 ];
 const locations = [
   "mumbai",
+  "new delhi",
   "delhi",
-  "hyderabad",
-  "chennai",
-  "kolkata",
   "mum",
   "del",
-  "hyd",
-  "chn",
-  "kol",
 ];
 const months = [
   "january", "february", "march", "april", "may", "june", "july", "august",
@@ -88,6 +83,13 @@ function detect(rawText) {
       reasons: [`non-target visa category (${excludedVisa.toUpperCase()})`],
     };
   }
+  if (!visa) {
+    return { level: "LOW", score: 0, reasons: ["target visa category required"] };
+  }
+  const location = locations.find((term) => hasTerm(text, term));
+  if (!location) {
+    return { level: "LOW", score: 0, reasons: ["target location required"] };
+  }
   const positivePatterns = [
     [/\bslots? (?:(?:are|have) )?open(?:ed)?\b/, 5, "slot-open phrase"],
     [/\b(?:slots?|appointments?) (?:are )?available\b/, 5, "appointment available"],
@@ -110,7 +112,6 @@ function detect(rawText) {
     score += 2;
     reasons.push(`+2 target visa (${visa.toUpperCase()})`);
   }
-  const location = locations.find((term) => hasTerm(text, term));
   if (location) {
     score += 1;
     reasons.push(`+1 target location (${location})`);
@@ -161,7 +162,7 @@ function detect(rawText) {
   }
 
   score = Math.max(score, 0);
-  const level = score >= 9 ? "HIGH" : score >= 5 ? "MEDIUM" : "LOW";
+  const level = score >= 8 ? "HIGH" : score >= 5 ? "MEDIUM" : "LOW";
   return { level, score, reasons: reasons.length ? reasons : ["no slot signal"] };
 }
 

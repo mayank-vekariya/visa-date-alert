@@ -10,8 +10,8 @@
 A local, read-only Telegram monitor focused on U.S. B-2 tourist-visa appointment
 reports. It watches only the groups or channels you select, accepts B-2 and the
 combined B-1/B-2 category, rejects explicitly named non-tourist categories, and
-filters location, month, urgency, negative, question, and promotion context.
-HIGH-confidence reports can optionally call your phone through Twilio.
+requires Mumbai or New Delhi. A matching availability report becomes HIGH and can
+call your phone through Twilio even when the message omits a month.
 
 **[View the project showcase](https://mayank-vekariya.github.io/visa-date-alert/)** ·
 **[Read the complete setup guide](docs/SETUP.md)** ·
@@ -53,8 +53,8 @@ flowchart LR
 | Confidence | Default score | Delivery |
 | --- | ---: | --- |
 | LOW | 0–4 | No notification |
-| MEDIUM | 5–8 | Telegram alert, Saved Messages, reminders |
-| HIGH | 9+ | Same delivery plus optional Twilio call |
+| MEDIUM | 5–7 | Telegram alert, Saved Messages, reminders |
+| HIGH | 8+ | Same delivery plus optional Twilio call |
 
 ## Quick start on Windows
 
@@ -72,7 +72,7 @@ local file `.env`. Fill in your own values, then run:
 ```powershell
 .\.venv\Scripts\visa-alert.exe doctor
 .\.venv\Scripts\visa-alert.exe list-chats
-.\.venv\Scripts\visa-alert.exe check "B2 slots available in Hyderabad for December. Check now"
+.\.venv\Scripts\visa-alert.exe check "B1/B2 slots available in New Delhi"
 .\.venv\Scripts\visa-alert.exe run
 ```
 
@@ -91,7 +91,8 @@ keeps every credential, phone number, bot chat ID, and monitored chat ID blank.
 | `TELEGRAM_ALERT_BOT_TOKEN` | Private notification bot | Yes |
 | `TELEGRAM_ALERT_CHAT_ID` | Recipient for normal bot notifications | Private |
 | `MONITORED_CHAT_IDS` | Explicit source allowlist | Private |
-| `TARGET_VISAS`, `EXCLUDED_VISAS`, `TARGET_LOCATIONS` | Accepted, rejected, and location aliases | No |
+| `TARGET_VISAS`, `EXCLUDED_VISAS`, `TARGET_LOCATIONS` | Accepted, rejected, and target aliases | No |
+| `REQUIRE_TARGET_VISA`, `REQUIRE_TARGET_LOCATION` | Require both configured rule dimensions | No |
 | `MEDIUM_SCORE`, `HIGH_SCORE` | Alert thresholds | No |
 | `DRY_RUN` | Score and log without sending alerts | No |
 | `TWILIO_*`, `ALERT_TO_NUMBER` | Optional phone-call/SMS account data | Yes |
@@ -106,11 +107,11 @@ The `check` command is local: it does not connect to Telegram and cannot call
 Twilio.
 
 ```powershell
-visa-alert check "B2 bulk appointments Hyderabad Dec 2026"
+visa-alert check "B2 bulk appointments New Delhi Dec 2026"
 visa-alert check "NA 2 All"
 visa-alert check "Any B2 dates for Dec?"
 visa-alert check "B2 slots available, low charges, ping me"
-visa-alert check "H1B slots available in Hyderabad. Check now"
+visa-alert check "B1/B2 slots available in Hyderabad. Check now"
 ```
 
 For a live network trial without notifications, set `DRY_RUN=true`. The monitor
@@ -154,6 +155,15 @@ hour and restarts it when needed. `status.ps1` reports both tasks and the latest
 heartbeat. Remove both tasks—without deleting configuration or data—with
 `uninstall-startup.ps1`.
 
+## Run continuously in the cloud
+
+The monitor can run on a small Linux VM with a fresh Telegram login, persistent
+session storage, automatic service restarts, and an hourly heartbeat timer. An
+eligible new AWS account can cover it with Free Plan credits for up to six months;
+the guide also explains Google and Oracle cost caveats. Follow the
+[cloud deployment guide](docs/CLOUD_DEPLOYMENT.md), and never run the Windows and
+live cloud copies together because that can duplicate alerts and calls.
+
 ## Verification
 
 ```powershell
@@ -162,7 +172,7 @@ heartbeat. Remove both tasks—without deleting configuration or data—with
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-The suite currently contains **28 passing tests** for detection, false-positive
+The suite currently contains **31 passing tests** for detection, false-positive
 suppression, deduplication, and single-instance behavior. GitHub Actions runs lint
 and tests on Python 3.11, 3.12, and 3.13 without credentials.
 
@@ -172,6 +182,7 @@ and tests on Python 3.11, 3.12, and 3.13 without credentials.
 visa_alert_bot/       Python monitor, detector, alerts, state, and CLI
 tests/                Offline unit tests—no live accounts
 docs/                 GitHub Pages showcase and detailed guides
+deploy/linux/         Linux service, heartbeat timer, and installer
 .github/workflows/    Public credential-free CI
 setup.ps1             Local environment bootstrap
 install-startup.ps1   Windows sign-in task installer

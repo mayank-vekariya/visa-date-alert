@@ -71,9 +71,11 @@ and case-insensitive:
 ```dotenv
 TARGET_VISAS=B2,B-2,B1/B2,B1 B2,tourist visa,visitor visa
 EXCLUDED_VISAS=B1,B-1,H1B,H-1B,H1,H-1,H4,H-4,F1,F-1,L1,L-1,O1,O-1,J1,J-1
-TARGET_LOCATIONS=Mumbai,Delhi,Hyderabad,Chennai,Kolkata,MUM,DEL,HYD,CHN,KOL
+TARGET_LOCATIONS=Mumbai,New Delhi,Delhi,MUM,DEL
+REQUIRE_TARGET_VISA=true
+REQUIRE_TARGET_LOCATION=true
 MEDIUM_SCORE=5
-HIGH_SCORE=9
+HIGH_SCORE=8
 ```
 
 ## 6. Verify safely
@@ -82,8 +84,8 @@ The doctor never displays secrets or sends an alert:
 
 ```powershell
 .\.venv\Scripts\visa-alert.exe doctor
-.\.venv\Scripts\visa-alert.exe check "B2 slots available in Hyderabad for December. Check now"
-.\.venv\Scripts\visa-alert.exe check "H1B slots available in Hyderabad for December. Check now"
+.\.venv\Scripts\visa-alert.exe check "B1/B2 slots available in New Delhi"
+.\.venv\Scripts\visa-alert.exe check "B1/B2 slots available in Hyderabad"
 .\.venv\Scripts\visa-alert.exe check "NA 2 All"
 ```
 
@@ -139,6 +141,10 @@ To remove only the startup task while keeping all local data:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\uninstall-startup.ps1
 ```
+
+To run continuously while the PC is off, use the separate
+[Google Cloud/Linux deployment guide](CLOUD_DEPLOYMENT.md). It includes a Linux
+service, hourly heartbeat recovery, and a safe handoff that avoids duplicate calls.
 
 ## Troubleshooting
 

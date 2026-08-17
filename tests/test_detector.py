@@ -16,17 +16,15 @@ class MessageDetectorTests(unittest.TestCase):
             ),
             (
                 "Mumbai",
+                "New Delhi",
                 "Delhi",
-                "Hyderabad",
-                "Chennai",
-                "Kolkata",
                 "MUM",
                 "DEL",
-                "HYD",
-                "CHN",
-                "KOL",
             ),
+            high_score=8,
             excluded_visas=("B1", "B-1", "H1B", "H-1B", "H1", "H4", "F1", "L1"),
+            require_target_visa=True,
+            require_target_location=True,
         )
 
     def test_strong_report_is_high(self) -> None:
@@ -34,9 +32,9 @@ class MessageDetectorTests(unittest.TestCase):
         self.assertEqual(result.level, AlertLevel.HIGH)
         self.assertGreaterEqual(result.score, 9)
 
-    def test_short_slot_report_is_medium(self) -> None:
+    def test_slot_report_without_visa_or_location_is_low(self) -> None:
         result = self.detector.detect("Slots open")
-        self.assertEqual(result.level, AlertLevel.MEDIUM)
+        self.assertEqual(result.level, AlertLevel.LOW)
 
     def test_explicit_no_slots_is_rejected(self) -> None:
         result = self.detector.detect("No slots open in Mumbai today")
@@ -60,9 +58,9 @@ class MessageDetectorTests(unittest.TestCase):
         result = self.detector.detect("B1/B2 slots opened in Delhi but are gone")
         self.assertEqual(result.level, AlertLevel.LOW)
 
-    def test_compact_location_report_is_medium(self) -> None:
+    def test_location_report_without_visa_is_low(self) -> None:
         result = self.detector.detect("Mumbai open")
-        self.assertEqual(result.level, AlertLevel.MEDIUM)
+        self.assertEqual(result.level, AlertLevel.LOW)
 
     def test_unrelated_open_message_is_low(self) -> None:
         result = self.detector.detect("The office is open for lunch")
@@ -73,15 +71,15 @@ class MessageDetectorTests(unittest.TestCase):
         self.assertEqual(result.level, AlertLevel.HIGH)
 
     def test_b2_bulk_report_is_detected(self) -> None:
-        result = self.detector.detect("B2 bulk appointments Hyderabad Dec 2026")
+        result = self.detector.detect("B2 bulk appointments New Delhi Dec 2026")
         self.assertEqual(result.level, AlertLevel.HIGH)
 
     def test_b2_targeted_report_is_high(self) -> None:
-        result = self.detector.detect("B-2 slots available in Chennai for December. Check now")
+        result = self.detector.detect("B-2 slots available in New Delhi for December. Check now")
         self.assertEqual(result.level, AlertLevel.HIGH)
 
     def test_compact_b2_report_is_medium(self) -> None:
-        result = self.detector.detect("B2 available for 07/27")
+        result = self.detector.detect("B2 available in Mumbai for 07/27")
         self.assertEqual(result.level, AlertLevel.MEDIUM)
 
     def test_explicit_non_tourist_visa_is_rejected(self) -> None:
@@ -89,9 +87,26 @@ class MessageDetectorTests(unittest.TestCase):
         self.assertEqual(result.level, AlertLevel.LOW)
         self.assertEqual(result.score, 0)
 
-    def test_city_ofc_report_is_medium(self) -> None:
+    def test_non_target_city_ofc_report_is_low(self) -> None:
         result = self.detector.detect("Chennai July OFC available")
-        self.assertEqual(result.level, AlertLevel.MEDIUM)
+        self.assertEqual(result.level, AlertLevel.LOW)
+
+    def test_screenshot_new_delhi_format_is_high(self) -> None:
+        result = self.detector.detect(
+            "B1/B2 Slots Alert! Location: NEW DELHI OFC Available Dates: 1 "
+            "Earliest Date: 21 Sep 26 Earliest Date Slots: 1"
+        )
+        self.assertEqual(result.level, AlertLevel.HIGH)
+
+    def test_mumbai_without_month_is_high(self) -> None:
+        result = self.detector.detect("B1/B2 Slots Alert! Location: MUMBAI OFC Available Dates: 1")
+        self.assertEqual(result.level, AlertLevel.HIGH)
+
+    def test_hyderabad_b1_b2_format_is_rejected(self) -> None:
+        result = self.detector.detect(
+            "B1/B2 Slots Alert! Location: HYDERABAD OFC Available Dates: 1 Earliest Date: 03 Nov 26"
+        )
+        self.assertEqual(result.level, AlertLevel.LOW)
 
     def test_na_abbreviation_is_rejected(self) -> None:
         result = self.detector.detect("NA 2 All")

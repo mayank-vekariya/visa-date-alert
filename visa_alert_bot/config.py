@@ -52,6 +52,8 @@ class AppConfig:
     target_visas: tuple[str, ...]
     excluded_visas: tuple[str, ...]
     target_locations: tuple[str, ...]
+    require_target_visa: bool
+    require_target_location: bool
     medium_score: int
     high_score: int
     alert_repeat_delays: tuple[int, ...]
@@ -86,7 +88,7 @@ class AppConfig:
 
         data_dir = root / "data"
         medium_score = int(os.getenv("MEDIUM_SCORE", "5"))
-        high_score = int(os.getenv("HIGH_SCORE", "9"))
+        high_score = int(os.getenv("HIGH_SCORE", "8"))
         if high_score <= medium_score:
             raise ValueError("HIGH_SCORE must be greater than MEDIUM_SCORE")
 
@@ -107,8 +109,10 @@ class AppConfig:
             ),
             target_locations=_csv(
                 "TARGET_LOCATIONS",
-                "Mumbai,Delhi,Hyderabad,Chennai,Kolkata,MUM,DEL,HYD,CHN,KOL",
+                "Mumbai,New Delhi,Delhi,MUM,DEL",
             ),
+            require_target_visa=_bool("REQUIRE_TARGET_VISA", True),
+            require_target_location=_bool("REQUIRE_TARGET_LOCATION", True),
             medium_score=medium_score,
             high_score=high_score,
             alert_repeat_delays=_ints("ALERT_REPEAT_DELAYS", "20,60"),

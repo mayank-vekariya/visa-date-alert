@@ -137,8 +137,10 @@ class MessageDetector:
         target_visas: tuple[str, ...],
         target_locations: tuple[str, ...],
         medium_score: int = 5,
-        high_score: int = 9,
+        high_score: int = 8,
         excluded_visas: tuple[str, ...] = (),
+        require_target_visa: bool = False,
+        require_target_location: bool = False,
     ) -> None:
         self.target_visas = tuple(normalize(value) for value in target_visas)
         self.excluded_visas = tuple(normalize(value) for value in excluded_visas)
@@ -148,6 +150,8 @@ class MessageDetector:
         self._location_patterns = tuple(_term_pattern(value) for value in self.target_locations)
         self.medium_score = medium_score
         self.high_score = high_score
+        self.require_target_visa = require_target_visa
+        self.require_target_location = require_target_location
 
     def detect(self, text: str) -> Detection:
         value = normalize(text)
@@ -188,6 +192,8 @@ class MessageDetector:
                 (f"non-target visa category ({excluded_visas[0]})",),
                 value,
             )
+        if self.require_target_visa and not visas:
+            return Detection(AlertLevel.LOW, 0, ("target visa category required",), value)
         if visas:
             score += 2
             reasons.append(f"+2 target visa ({visas[0]})")
@@ -199,6 +205,8 @@ class MessageDetector:
             )
             if location and pattern.search(value)
         ]
+        if self.require_target_location and not locations:
+            return Detection(AlertLevel.LOW, 0, ("target location required",), value)
         if locations:
             score += 1
             reasons.append(f"+1 target location ({locations[0]})")

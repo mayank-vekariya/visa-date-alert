@@ -31,7 +31,7 @@ alerting on one broad word:
 
 - slot/open/available and bulk-appointment phrases;
 - a target visa such as B2, B-2, B1/B2, tourist visa, or visitor visa;
-- a target city or short code such as Hyderabad or HYD;
+- the required target city, Mumbai or New Delhi (including MUM/DEL aliases);
 - urgency and appointment-month context.
 
 Hard negatives stop common false alarms first: `NA`, no slots, already gone,
@@ -45,10 +45,14 @@ The score maps to three levels:
 | Level | Default score | Result |
 | --- | ---: | --- |
 | LOW | 0–4 | Logged only |
-| MEDIUM | 5–8 | Telegram bot + Saved Messages + reminders |
-| HIGH | 9+ | Same alerts, plus a Twilio call when enabled |
+| MEDIUM | 5–7 | Telegram bot + Saved Messages + reminders |
+| HIGH | 8+ | Same alerts, plus a Twilio call when enabled |
 
 The thresholds are configurable in `.env`.
+
+The default personal rule requires both a B-2/B-1-B-2 term and a Mumbai/New Delhi
+term. A real availability phrase plus those two required terms scores at least 8,
+so it becomes HIGH without relying on urgency or month text. Other cities are LOW.
 
 ## 3. Deduplication and privacy
 

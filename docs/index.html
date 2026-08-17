@@ -99,12 +99,12 @@
               </div>
             </div>
             <blockquote>
-              “B2 slots available in Hyderabad for December. Check now.”
+              “B1/B2 slots available in New Delhi. Check now.”
             </blockquote>
             <div class="analysis-row">
               <div>
                 <span class="micro-label">confidence</span>
-                <strong class="score">11<span>/12+</span></strong>
+                <strong class="score">10<span>/12+</span></strong>
               </div>
               <div class="signal-bars" aria-label="High confidence">
                 <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
@@ -134,7 +134,7 @@
       <section class="ticker" aria-label="Supported alert concepts">
         <div>
           <span>B-2 tourist</span><i></i><span>B1 / B2 combined</span><i></i><span>Visitor visa</span><i></i>
-          <span>Non-tourist categories rejected</span><i></i><span>OFC / VAC</span><i></i><span>India locations</span>
+          <span>Other categories rejected</span><i></i><span>OFC / VAC</span><i></i><span>Mumbai / New Delhi</span>
         </div>
       </section>
 
@@ -183,9 +183,9 @@
           <div class="bento-grid">
             <article class="bento bento-large privacy-card">
               <span class="card-kicker">Local privacy</span>
-              <h3>Your credentials never need a cloud server.</h3>
+              <h3>Your credentials stay in your private runtime.</h3>
               <p>
-                Secrets, sessions, deduplication state, and logs stay on your computer and outside Git.
+                Secrets, sessions, state, and logs stay on your computer or private VM—and outside Git.
               </p>
               <div class="privacy-visual" aria-hidden="true">
                 <div class="lock-body"><i></i></div>
@@ -208,8 +208,8 @@
               <h3>Three levels. One calm inbox.</h3>
               <div class="levels">
                 <div><span>0–4</span><b>LOW</b><small>log only</small></div>
-                <div><span>5–8</span><b>MEDIUM</b><small>Telegram</small></div>
-                <div class="hot"><span>9+</span><b>HIGH</b><small>call optional</small></div>
+                <div><span>5–7</span><b>MEDIUM</b><small>Telegram</small></div>
+                <div class="hot"><span>8+</span><b>HIGH</b><small>call optional</small></div>
               </div>
             </article>
             <article class="bento bento-wide windows-card">
@@ -240,7 +240,7 @@
             and runs entirely on this page—nothing is uploaded.
           </p>
           <div class="preset-list" aria-label="Detector examples">
-            <button type="button" data-message="B2 slots available in Hyderabad for December. Check now">
+            <button type="button" data-message="B1/B2 slots available in New Delhi. Check now">
               Strong report <span>HIGH</span>
             </button>
             <button type="button" data-message="Any B2 dates for Dec?">
@@ -252,28 +252,30 @@
             <button type="button" data-message="B2 slots available, low charges, ping me">
               Promotion <span>LOW</span>
             </button>
-            <button type="button" data-message="H1B slots available in Hyderabad. Check now">
+            <button type="button" data-message="H1B slots available in New Delhi. Check now">
               Other visa <span>LOW</span>
+            </button>
+            <button type="button" data-message="B1/B2 slots available in Hyderabad. Check now">
+              Other city <span>LOW</span>
             </button>
           </div>
         </div>
         <div class="lab-panel">
           <label for="message-input">Telegram message</label>
-          <textarea id="message-input" rows="5">B2 slots available in Hyderabad for December. Check now</textarea>
+          <textarea id="message-input" rows="5">B1/B2 slots available in New Delhi. Check now</textarea>
           <button class="button button-primary analyze-button" id="analyze-button" type="button">
             Analyze message <span aria-hidden="true">→</span>
           </button>
           <div class="lab-result high" id="lab-result" aria-live="polite">
             <div class="result-top">
               <div><span>Result</span><strong id="result-level">HIGH</strong></div>
-              <div class="result-score"><span>Score</span><strong id="result-score">11</strong><small>/ 12+</small></div>
+              <div class="result-score"><span>Score</span><strong id="result-score">10</strong><small>/ 12+</small></div>
             </div>
             <div class="score-track"><i id="score-fill"></i></div>
             <ul id="reason-list">
               <li>+5 appointment available</li>
               <li>+2 target visa (B2)</li>
-              <li>+1 target location (Hyderabad)</li>
-              <li>+1 appointment month</li>
+              <li>+1 target location (New Delhi)</li>
               <li>+2 urgency (check now)</li>
             </ul>
           </div>
@@ -302,7 +304,7 @@
           </ol>
           <div class="setup-actions">
             <a class="button button-primary" href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SETUP.md">Read the complete setup guide</a>
-            <a class="button button-ghost" href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/HOW_IT_WORKS.md">See how it works</a>
+            <a class="button button-ghost" href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/CLOUD_DEPLOYMENT.md">Run it in the cloud</a>
           </div>
         </div>
       </section>
@@ -329,7 +331,7 @@
         </div>
         <div class="footer-links">
           <div><strong>Project</strong><a href="https://github.com/mayank-vekariya/visa-date-alert">Source</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SETUP.md">Setup</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/SOURCE_SELECTION.md">Sources</a></div>
-          <div><strong>Details</strong><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/HOW_IT_WORKS.md">Architecture</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/SECURITY.md">Security</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/LICENSE">MIT License</a></div>
+          <div><strong>Details</strong><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/HOW_IT_WORKS.md">Architecture</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/docs/CLOUD_DEPLOYMENT.md">Cloud</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/SECURITY.md">Security</a><a href="https://github.com/mayank-vekariya/visa-date-alert/blob/main/LICENSE">MIT License</a></div>
         </div>
       </div>
       <div class="shell footer-bottom">

@@ -92,6 +92,8 @@ async def _run_monitor_locked(config: AppConfig) -> None:
         config.medium_score,
         config.high_score,
         config.excluded_visas,
+        config.require_target_visa,
+        config.require_target_location,
     )
     state = AlertState(config.database_path)
     state.prune()

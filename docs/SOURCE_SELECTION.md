@@ -39,11 +39,11 @@ login code. Confirm every report on the official appointment site yourself.
 Test representative phrases before changing thresholds:
 
 ```powershell
-visa-alert check "B2 bulk appointments Hyderabad Dec 2026"
+visa-alert check "B2 bulk appointments New Delhi Dec 2026"
 visa-alert check "OFC available but no submit button"
 visa-alert check "Any B2 dates for Dec"
 visa-alert check "B2 slots available, low charges, ping me"
-visa-alert check "H1B slots available in Hyderabad. Check now"
+visa-alert check "B1/B2 slots available in Hyderabad. Check now"
 ```
 
 The first is a possible alert. The other four should remain LOW because they are

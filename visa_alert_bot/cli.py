@@ -59,6 +59,8 @@ def _check(config: AppConfig, text: str) -> int:
         config.medium_score,
         config.high_score,
         config.excluded_visas,
+        config.require_target_visa,
+        config.require_target_location,
     )
     result = detector.detect(text)
     print(f"Level: {result.level.value.upper()}")

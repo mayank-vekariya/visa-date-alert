@@ -1,0 +1,7 @@
+[Unit]
+Description=Check Visa Date Alert heartbeat
+After=visa-date-alert.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/visa-date-alert/deploy/linux/watchdog.sh
